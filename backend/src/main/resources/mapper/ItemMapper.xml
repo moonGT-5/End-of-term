@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.backend.mapper.ItemMapper">
+    <resultMap id="result" type="org.example.backend.entity.Item">
+        <result column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="number" jdbcType="INTEGER" property="number"/>
+        <result column="price" jdbcType="INTEGER" property="price"/>
+        <result column="picture" jdbcType="VARCHAR" property="picture"/>
+    </resultMap>
+
+    <select id="findAllItems" resultType="org.example.backend.entity.Item">
+        select *
+        from items
+    </select>
+
+    <select id="findItemById" resultType="org.example.backend.entity.Item">
+        select *
+        from items
+        where id = #{id};
+    </select>
+
+    <select id="findItemByName" resultType="org.example.backend.entity.Item">
+        select *
+        from items
+        where name = #{name};
+    </select>
+
+    <update id="deleteItemById">
+        DELETE
+        FROM items
+        WHERE id = #{id};
+    </update>
+
+    <insert id="insertItem" parameterType="org.example.backend.entity.Item">
+        INSERT INTO items (name, number, price, picture)
+        VALUES (#{name}, #{number}, #{price}, #{picture})
+    </insert>
+
+</mapper>
