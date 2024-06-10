@@ -1,6 +1,6 @@
 package org.example.backend.controller;
 
-import org.example.backend.Service.ItemService;
+import org.example.backend.service.ItemService;
 import org.example.backend.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping("/api")
+    @GetMapping("/items")
     public ResponseEntity<List<Item>> findAllItems() {
         List<Item> items = itemService.findAllItems();
         return ResponseEntity.ok(items);
@@ -56,6 +56,16 @@ public class ItemController {
     public ResponseEntity<Item> insertItem(@RequestBody Item item) {
         Item insertItem = itemService.insertItem(item);
         return ResponseEntity.ok(insertItem);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<List<Item>> updateItems(@RequestBody List<Item> items) {
+        List<Item> updatedItems = itemService.updateItemsById(items);
+        if (!updatedItems.isEmpty()) {
+            return ResponseEntity.ok(updatedItems);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

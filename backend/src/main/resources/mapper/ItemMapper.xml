@@ -37,4 +37,10 @@
         VALUES (#{name}, #{number}, #{price}, #{picture})
     </insert>
 
+    <update id="updateItemById" parameterType="org.example.backend.entity.Item">
+        UPDATE items
+        SET number = number - #{number}
+        WHERE id = #{id}
+    </update>
+
 </mapper>

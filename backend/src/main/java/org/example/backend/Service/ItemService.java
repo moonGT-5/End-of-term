@@ -1,4 +1,4 @@
-package org.example.backend.Service;
+package org.example.backend.service;
 
 import org.example.backend.entity.Item;
 import org.example.backend.mapper.ItemMapper;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
@@ -32,5 +33,10 @@ public class ItemService {
     public Item insertItem(Item item) {
         itemMapper.insertItem(item);
         return item;
+    }
+
+    public List<Item> updateItemsById(List<Item> items) {
+        items.forEach(item -> itemMapper.updateItemById(item));
+        return items.stream().map(item -> itemMapper.findItemById(item.getId())).collect(Collectors.toList());
     }
 }
