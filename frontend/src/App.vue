@@ -1,9 +1,6 @@
 <template>
   <div id="app">
     <router-view />
-    <!-- <footer> -->
-      <!-- <router-link to="/about">© 2024 Altscherz</router-link> -->
-    <!-- </footer> -->
   </div>
 </template>
 

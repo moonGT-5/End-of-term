@@ -1,57 +1,59 @@
 <template>
   <el-container>
-    <div class="home">
-      <el-header>
-        <h1>购物车</h1>
-      </el-header>
+    <el-header>
+      <h1>网上点餐系统</h1>
+    </el-header>
 
-      <el-main>
-        <el-table :data="cartItems" stripe style="width: 100%" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="60">
-          </el-table-column>
-          <el-table-column label="商品" width="500">
-            <template #default="{ row }">
-              <div style="display: flex; align-items: center;">
-                <img :src="row.picture" alt="产品图片" style="width: 50px; height: auto; margin-right: 10px;">
-                <span>{{ row.name }}</span>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="获取积分" prop="number">
-          </el-table-column>
-          <el-table-column label="单价" prop="price">
-          </el-table-column>
-          <el-table-column label="数量">
-            <template #default="{ row }">
-              <el-input-number v-model="row.quantity" :min="1" :max="row.maxQuantity"
-                @change="updateTotals"></el-input-number>
-            </template>
-          </el-table-column>
-          <el-table-column label="小计">
-            <template #default="{ row }">
-              {{ row.price * row.quantity }}
-            </template>
-          </el-table-column>
-          <el-table-column label="操作">
-            <template #default="{ $index }">
-              <el-button @click="removeItem($index)" type="text" size="small">删除</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+    <el-container>
+      <el-aside width="200px">
+        <el-menu router>
+          <el-menu-item index="/home">今日菜品</el-menu-item>
+          <el-menu-item index="/register">注册会员</el-menu-item>
+          <el-menu-item index="/search">菜品查询</el-menu-item>
+          <el-menu-item index="/orders">我的订单</el-menu-item>
+          <el-menu-item index="/feedback">系统留言</el-menu-item>
+        </el-menu>
+      </el-aside>
 
-        <div class="foot">
-          <el-button @click="removeSelectedItems">删除所选</el-button>
-          <span>商品总价: {{ totalPrice }}</span>
-          <span>可获取积分: {{ totalPoints }}</span>
-          <el-button type="primary" @click="update">立即购买</el-button>
-        </div>
-      </el-main>
-    </div>
+      <el-container>
+        <el-main>
+          <el-table :data="cartItems" stripe style="width: 100%" @selection-change="handleSelectionChange"
+            ref="cartTable">
+            <el-table-column type="selection" width="60">
+            </el-table-column>
+            <el-table-column label="商品" width="500">
+              <template #default="{ row }">
+                <div style="display: flex; align-items: center;">
+                  <img :src="row.picture" alt="产品图片" style="width: 50px; height: auto; margin-right: 10px;">
+                  <span>{{ row.name }}</span>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="单价" prop="price">
+              <template #default="{ row }">
+                <span class="bold-price">{{ row.price }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column label="剩余数量" prop="number">
+            </el-table-column>
+            <el-table-column label="操作">
+              <template #default="{ row }">
+                <el-button @click="evaluateItem(row.name, true)" type="text" size="small">评价</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
 
-
-    <el-footer class="footer">
-      <router-link to="/about">© 2024 Altscherz</router-link>
-    </el-footer>
+          <div class="foot">
+            <el-button @click="clearSelection">取消所选</el-button>
+            <span>商品总价: {{ totalPrice }}</span>
+            <el-button type="primary" @click="update">立即购买</el-button>
+          </div>
+        </el-main>
+        <el-footer class="footer">
+          <router-link to="/about">© 2024 Altscherz</router-link>
+        </el-footer>
+      </el-container>
+    </el-container>
   </el-container>
 </template>
 
@@ -70,11 +72,6 @@ export default {
       return this.selectedItems.reduce((total, item) => {
         return total + (item.price * item.quantity);
       }, 0);
-    },
-    totalPoints() {
-      return this.selectedItems.reduce((total, item) => {
-        return total + (item.number * item.quantity);
-      }, 0);
     }
   },
   methods: {
@@ -82,15 +79,13 @@ export default {
       this.selectedItems = selectedItems;
     },
     updateTotals() {
-      this.$forceUpdate(); // 强制更新视图
+      this.$forceUpdate();
     },
-    removeItem(index) {
-      this.cartItems.splice(index, 1);
-      this.updateTotals();
+    evaluateItem(productName, isLocked) {
+      this.$router.push({ name: 'feedback', params: { productName, isLocked } });
     },
-    removeSelectedItems() {
-      this.cartItems = this.cartItems.filter(item => !this.selectedItems.includes(item));
-      this.updateTotals();
+    clearSelection() {
+      this.$refs.cartTable.clearSelection();
     },
     update() {
       const updatedItems = this.selectedItems.map(item => ({
@@ -100,8 +95,8 @@ export default {
       axios.post('http://localhost:8000/api/update', updatedItems)
         .then(response => {
           console.log('Update response:', response);
-          alert('购买成功!');
-          this.$router.push({ name: 'feedback' });
+          alert('购买成功,祝您用餐愉快!');
+          this.$router.push({ name: 'feedback', params: { isLocked: false } });
         })
         .catch(error => {
           console.error('购买失败:', error);
@@ -115,7 +110,7 @@ export default {
             ...item,
             productName: item.name,
             image: item.picture,
-            points: item.number,
+            number: item.number, // 剩余数量
             quantity: 1,
             maxQuantity: item.maxQuantity
           }));
@@ -147,7 +142,7 @@ export default {
 
 <style scoped>
 h1 {
-  text-align: left;
+  text-align: center;
 }
 
 .home {
@@ -171,5 +166,9 @@ h1 {
   padding: 10px;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+}
+
+.bold-price {
+  font-weight: bold;
 }
 </style>
