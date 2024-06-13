@@ -1,7 +1,7 @@
 <template>
     <el-container>
       <el-header>
-        <h1>注册会员</h1>
+        <h1>我的订单</h1>
       </el-header>
   
       <el-container>

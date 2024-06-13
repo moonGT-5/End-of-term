@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <h1>网上点餐系统</h1>
+      <h1>今日菜品</h1>
     </el-header>
 
     <el-container>
@@ -140,7 +140,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 h1 {
   text-align: center;
 }
