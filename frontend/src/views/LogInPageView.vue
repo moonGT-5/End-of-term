@@ -7,7 +7,7 @@
             </div>
             <div class="right">
                 <h1>登录</h1>
-                <input type="text" class="inputItem" v-model="username" placeholder="用户名" required />
+                <input type="text" class="inputItem" v-model="name" placeholder="用户名" required />
                 <input type="password" class="inputItem" v-model="password" placeholder="密码" required />
                 <a href="#" class="forgetPassword">忘记密码?</a>
                 <button class="btn" @click.prevent="login">登录</button>
@@ -17,21 +17,32 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
-            username: '',
+            name: '',
             password: ''
         };
     },
     methods: {
         login() {
-            if (this.username === 'xu' && this.password === '2411') {
-                this.$router.push({ name: 'home' });
-            } else {
-                alert('用户名或密码错误');
-            }
-        }
+            axios.get('http://localhost:8000/api/users')
+                .then(response => {
+                    const users = response.data;
+                    const matchedUser = users.find(user => user.name === this.name && user.password === this.password);
+
+                    if (matchedUser) {
+                        this.$router.push({ name: 'home' });
+                    } else {
+                        alert('用户名或密码错误');
+                    }
+                })
+                .catch(error => {
+                    console.error('登录失败：', error);
+                    alert('登录失败，请稍后再试');
+                });
+        },
     }
 };
 </script>

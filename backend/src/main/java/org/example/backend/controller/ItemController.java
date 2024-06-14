@@ -52,13 +52,13 @@ public class ItemController {
         }
     }
 
-    @PostMapping("/submit")
+    @PostMapping("/items/insert")
     public ResponseEntity<Item> insertItem(@RequestBody Item item) {
         Item insertItem = itemService.insertItem(item);
         return ResponseEntity.ok(insertItem);
     }
 
-    @PostMapping("/update")
+    @PostMapping("/items/update")
     public ResponseEntity<List<Item>> updateItems(@RequestBody List<Item> items) {
         List<Item> updatedItems = itemService.updateItemsById(items);
         if (!updatedItems.isEmpty()) {

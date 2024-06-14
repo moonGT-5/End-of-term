@@ -21,7 +21,7 @@
             ref="cartTable">
             <el-table-column type="selection" width="60">
             </el-table-column>
-            <el-table-column label="商品" width="500">
+            <el-table-column label="商品" width="300">
               <template #default="{ row }">
                 <div style="display: flex; align-items: center;">
                   <img :src="row.picture" alt="产品图片" style="width: 50px; height: auto; margin-right: 10px;">
@@ -29,9 +29,14 @@
                 </div>
               </template>
             </el-table-column>
+            <el-table-column label="描述">
+              <template #default="{ row }">
+                <span>{{ row.info }}</span>
+              </template>
+            </el-table-column>
             <el-table-column label="单价" prop="price">
               <template #default="{ row }">
-                <span class="bold-price">{{ row.price }}</span>
+                <span class="bold-price">{{ row.price }}￥</span>
               </template>
             </el-table-column>
             <el-table-column label="剩余数量" prop="number">
@@ -45,7 +50,7 @@
 
           <div class="foot">
             <el-button @click="clearSelection">取消所选</el-button>
-            <span>商品总价: {{ totalPrice }}</span>
+            <span>商品总价: {{ totalPrice }}￥</span>
             <el-button type="primary" @click="update">立即购买</el-button>
           </div>
         </el-main>
@@ -92,7 +97,7 @@ export default {
         ...item,
         number: item.quantity
       }));
-      axios.post('http://localhost:8000/api/update', updatedItems)
+      axios.post('http://localhost:8000/api/items/update', updatedItems)
         .then(response => {
           console.log('Update response:', response);
           alert('购买成功,祝您用餐愉快!');
@@ -164,11 +169,11 @@ h1 {
   text-align: center;
   background-color: #f8f8f8;
   padding: 10px;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -2px 4px rgba(147, 107, 33, 0.1);
   z-index: 1000;
 }
 
 .bold-price {
-  font-weight: bold;
+  font-weight: bolder;
 }
 </style>

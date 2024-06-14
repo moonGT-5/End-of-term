@@ -36,7 +36,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit">立即创建</el-button>
-              <el-button>取消</el-button>
+              <el-button @click="onCancel">取消</el-button>
             </el-form-item>
           </el-form>
 
@@ -68,6 +68,9 @@ export default {
     }
   },
   methods: {
+    onCancel() {
+      this.$router.go(-1);
+    },
     onSubmit() {
       console.log('submit button clicked!');
       const purchaseDateTime = new Date(this.form.date1.getTime());
@@ -82,10 +85,10 @@ export default {
       console.log('Sending form data:', formData);
       axios.post('http://localhost:8000/feedbacks', formData)
         .then(response => {
-          console.log('Feedback submitted successfully', response);
+          console.log('成功', response);
         })
         .catch(error => {
-          console.error('An error occurred while submitting feedback', error);
+          console.error('失败', error);
         });
     }
   }

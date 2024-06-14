@@ -33,8 +33,8 @@
     </update>
 
     <insert id="insertItem" parameterType="org.example.backend.entity.Item">
-        INSERT INTO items (name, number, price, picture)
-        VALUES (#{name}, #{number}, #{price}, #{picture})
+        INSERT INTO items (name, number, price, picture, info)
+        VALUES (#{name}, #{number}, #{price}, #{picture}, #{info})
     </insert>
 
     <update id="updateItemById" parameterType="org.example.backend.entity.Item">

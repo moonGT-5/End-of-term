@@ -6,6 +6,7 @@ public class Item {
     private int number;
     private int price;
     private String picture;
+    private String info;
 
     public int getId() {
         return id;
@@ -47,6 +48,14 @@ public class Item {
         this.picture = picture;
     }
 
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
@@ -55,6 +64,7 @@ public class Item {
                 ", number=" + number +
                 ", price=" + price +
                 ", picture='" + picture + '\'' +
+                ", info='" + info + '\'' +
                 '}';
     }
 }
