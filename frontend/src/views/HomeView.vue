@@ -24,7 +24,7 @@
             <el-table-column label="商品" width="300">
               <template #default="{ row }">
                 <div style="display: flex; align-items: center;">
-                  <img :src="row.picture" alt="产品图片" style="width: 50px; height: auto; margin-right: 10px;">
+                  <img :src="row.image" alt="产品图片" style="width: 50px; height: auto; margin-right: 10px;">
                   <span>{{ row.name }}</span>
                 </div>
               </template>
@@ -75,7 +75,7 @@ export default {
   computed: {
     totalPrice() {
       return this.selectedItems.reduce((total, item) => {
-        return total + (item.price * item.quantity);
+        return total + item.price;
       }, 0);
     }
   },
@@ -86,44 +86,44 @@ export default {
     updateTotals() {
       this.$forceUpdate();
     },
-    evaluateItem(productName, isLocked) {
-      this.$router.push({ name: 'feedback', params: { productName, isLocked } });
+    evaluateItem(name) {
+      this.$router.push({ name: 'feedback', params: { name} });
     },
     clearSelection() {
       this.$refs.cartTable.clearSelection();
     },
     update() {
-      const updatedItems = this.selectedItems.map(item => ({
-        ...item,
-        number: item.quantity
-      }));
-      axios.post('http://localhost:8000/api/items/update', updatedItems)
-        .then(response => {
-          console.log('Update response:', response);
-          alert('购买成功,祝您用餐愉快!');
-          this.$router.push({ name: 'feedback', params: { isLocked: false } });
-        })
-        .catch(error => {
-          console.error('购买失败:', error);
-        });
-    },
+  const updatedItems = this.selectedItems.map(item => ({
+    ...item,
+    number: 1 
+  }));
+  axios.post('http://localhost:8000/api/items/update', updatedItems)
+    .then(response => {
+      console.log('Update response:', response);
+      alert('购买成功,祝您用餐愉快!');
+      this.$router.push({ name: 'feedback'});
+    })
+    .catch(error => {
+      console.error('购买失败:', error);
+    });
+},
+
 
     fetchItems() {
       axios.get('http://localhost:8000/api/items')
         .then(response => {
           this.cartItems = response.data.map(item => ({
             ...item,
-            productName: item.name,
-            image: item.picture,
-            number: item.number, // 剩余数量
-            quantity: 1,
-            maxQuantity: item.maxQuantity
+            name: item.name,
+            image: item.image,
+            number: item.number,
           }));
         })
         .catch(error => {
           console.error('获取数据失败:', error);
         });
     }
+
   },
   created() {
     this.fetchItems();
@@ -144,6 +144,8 @@ export default {
   }
 };
 </script>
+
+
 
 <style>
 h1 {

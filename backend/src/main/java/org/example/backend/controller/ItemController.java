@@ -1,11 +1,15 @@
 package org.example.backend.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.backend.service.ItemService;
 import org.example.backend.entity.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,6 +17,10 @@ import java.util.List;
 @RequestMapping("/api")
 public class ItemController {
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private ObjectMapper objectMapper;
     @Autowired
     private ItemService itemService;
 
@@ -67,5 +75,33 @@ public class ItemController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/items/purchase")
+    public ResponseEntity<List<Item>> purchase() {
+        List<Object> purchaseObjects = redisTemplate.opsForList().range("updatedItems", 0, -1);
+        List<Item> purchases = new ArrayList<>();
+        for (Object outerObj : purchaseObjects) {
+            if (outerObj instanceof ArrayList) {
+                @SuppressWarnings("unchecked")
+                ArrayList<Object> innerList = (ArrayList<Object>) outerObj;
+                for (Object innerObj : innerList) {
+                    if (innerObj instanceof String) {
+                        String json = (String) innerObj;
+                        try {
+                            Item item = objectMapper.readValue(json, Item.class);
+                            purchases.add(item);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.out.println("内部列表类型出错: " + innerObj.getClass().getName());
+                    }
+                }
+            } else {
+                System.out.println("外部列表类型出错: " + outerObj.getClass().getName());
+            }
+        }
+        return ResponseEntity.ok(purchases);
+    }
+
 }
 

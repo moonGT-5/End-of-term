@@ -72,7 +72,7 @@ export default {
       .then(() => {
         alert('注册成功！');
         this.resetForm(); 
-        this.$router.push({ name: 'login', params: { isLocked: false } });
+        this.$router.push({ name: 'login'});
 
       })
       .catch(error => {

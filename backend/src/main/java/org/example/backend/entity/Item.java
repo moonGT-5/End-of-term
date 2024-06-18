@@ -1,11 +1,12 @@
 package org.example.backend.entity;
 
+
 public class Item {
     private int id;
     private String name;
     private int number;
     private int price;
-    private String picture;
+    private String image;
     private String info;
 
     public int getId() {
@@ -40,12 +41,12 @@ public class Item {
         this.price = price;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getImage() {
+        return image;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getInfo() {
@@ -63,7 +64,7 @@ public class Item {
                 ", name='" + name + '\'' +
                 ", number=" + number +
                 ", price=" + price +
-                ", picture='" + picture + '\'' +
+                ", image='" + image + '\'' +
                 ", info='" + info + '\'' +
                 '}';
     }

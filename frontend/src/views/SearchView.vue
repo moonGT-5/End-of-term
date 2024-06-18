@@ -28,7 +28,7 @@
             <p>菜品介绍：{{ item.info }}</p>
             <p>剩余数量：{{ item.number }}</p>
             <p>单价：{{ item.price }}￥</p>
-            <img :src="item.picture" alt="菜品图片" />
+            <img :src="item.image" alt="菜品图片" />
           </div>
 
           <el-footer class="footer">

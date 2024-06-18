@@ -32,7 +32,7 @@
     <update id="updateUserById" parameterType="org.example.backend.entity.User">
         UPDATE users
         SET password = #{password}
-        WHERE id = #{id}
+        WHERE name = #{name}
     </update>
 
 </mapper>

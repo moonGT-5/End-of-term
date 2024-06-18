@@ -6,7 +6,7 @@
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="number" jdbcType="INTEGER" property="number"/>
         <result column="price" jdbcType="INTEGER" property="price"/>
-        <result column="picture" jdbcType="VARCHAR" property="picture"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
     </resultMap>
 
     <select id="findAllItems" resultType="org.example.backend.entity.Item">
@@ -33,8 +33,8 @@
     </update>
 
     <insert id="insertItem" parameterType="org.example.backend.entity.Item">
-        INSERT INTO items (name, number, price, picture, info)
-        VALUES (#{name}, #{number}, #{price}, #{picture}, #{info})
+        INSERT INTO items (name, number, price, image, info)
+        VALUES (#{name}, #{number}, #{price}, #{image}, #{info})
     </insert>
 
     <update id="updateItemById" parameterType="org.example.backend.entity.Item">
