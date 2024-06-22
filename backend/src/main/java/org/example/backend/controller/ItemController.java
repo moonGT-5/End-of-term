@@ -5,15 +5,13 @@ import org.example.backend.entity.MongoItem;
 import org.example.backend.mapper.MongoItemRepository;
 import org.example.backend.service.ItemService;
 import org.example.backend.entity.Item;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -24,6 +22,10 @@ public class ItemController {
     private ItemService itemService;
     @Autowired
     private MongoItemRepository mongoItemRepository;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @GetMapping("/items")
     public ResponseEntity<List<Item>> findAllItems() {
@@ -77,11 +79,25 @@ public class ItemController {
         }
     }
 
-    @GetMapping("/items/purchase")
-    public ResponseEntity<List<MongoItem>> purchase() {
-        List<MongoItem> mongoItems = mongoItemRepository.findAll();
-        return ResponseEntity.ok(mongoItems);
+@GetMapping("/items/purchase")
+public ResponseEntity<List<MongoItem>> purchase() {
+    List<MongoItem> mongoItems = new ArrayList<>();
+    Set<String> keys = redisTemplate.keys("mongoItem:*");
+    if (keys != null && !keys.isEmpty()) {
+        for (String key : keys) {
+            try {
+                String mongoItemJson = redisTemplate.opsForValue().get(key);
+                MongoItem mongoItem = objectMapper.readValue(mongoItemJson, MongoItem.class);
+                mongoItems.add(mongoItem);
+            } catch (Exception e) {
+                throw new RuntimeException("序列化出错", e);
+            }
+        }
+    } else {
+        mongoItems = mongoItemRepository.findAll();
     }
+    return ResponseEntity.ok(mongoItems);
+}
 
 }
 
