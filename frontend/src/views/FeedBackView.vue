@@ -75,7 +75,6 @@ export default {
         rating: this.form.rating,
       };
 
-      console.log('Sending form data:', formData);
       axios.post('http://localhost:8000/feedbacks', formData)
         .then(response => {
           console.log('成功', response);
@@ -96,33 +95,33 @@ export default {
 }
 
 .el-menu {
-  background-color: transparent; /* 使菜单背景透明 */
+  background-color: transparent;
 }
 
 .el-menu-item:focus, .el-menu-item:hover {
-  background-color: #409EFF; /* 鼠标悬停或聚焦时的背景颜色 */
+  background-color: #409EFF;
 }
 
 .el-main {
-  padding: 20px; /* 增加一些内边距 */
+  padding: 20px;
 }
 
 /* 表单样式 */
 .el-form {
-  margin: 20px auto; /* 居中显示 */
-  max-width: 600px; /* 最大宽度 */
+  margin: 20px auto;
+  max-width: 600px;
 }
 
 .el-form-item {
-  margin-bottom: 24px; /* 增加表单项的底部间距 */
+  margin-bottom: 24px;
 }
 
 .el-input {
-  border-radius: 4px; /* 圆角边框 */
+  border-radius: 4px;
 }
 
 .el-button {
-  margin-right: 10px; /* 按钮之间的间距 */
+  margin-right: 10px;
 }
 
 /* 页脚样式 */

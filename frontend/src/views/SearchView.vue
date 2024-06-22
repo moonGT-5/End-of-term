@@ -75,17 +75,15 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* 搜索部分样式 */
 .el-input {
   margin: 20px 0;
-  width: 70%; /* 调整输入框宽度 */
+  width: 70%;
 }
 
 .el-button {
   margin: 20px 0;
 }
 
-/* 详情展示区域 */
 div[v-if="item"] {
   background-color: #f9f9f9;
   padding: 20px;
@@ -104,13 +102,12 @@ p {
 }
 
 img {
-  width: 100%; /* 让图片宽度自适应容器 */
-  max-width: 400px; /* 最大宽度限制 */
+  width: 100%;
+  max-width: 400px;
   margin-top: 20px;
   border-radius: 4px;
 }
 
-/* 页脚样式 */
 .footer {
   text-align: center;
   padding: 20px 0;
