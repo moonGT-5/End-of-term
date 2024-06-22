@@ -29,6 +29,11 @@
             <el-table-column label="描述" prop="info"></el-table-column>
             <el-table-column label="单价" prop="price"></el-table-column>
             <el-table-column label="购买数量" prop="number"></el-table-column>
+            <el-table-column label="购买时间">
+              <template v-slot="{ row }">
+                <span>{{ formatTime(row.modifiedTime) }}</span>
+              </template>
+            </el-table-column>
           </el-table>
 
           <el-footer class="footer">
@@ -54,6 +59,12 @@ export default {
     this.fetchItems();
   },
   methods: {
+    formatTime(timeStr) {
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+      const time = new Date(timeStr);
+      // 注意：Intl.DateTimeFormat的具体格式化结果可能依赖于浏览器的地区设置
+      return new Intl.DateTimeFormat('zh-CN', options).format(time).replace(/\//g, '-').replace(',', '');
+    },
     fetchItems() {
       axios.get('http://localhost:8000/api/items/purchase')
         .then(response => {
