@@ -97,8 +97,48 @@ export default {
 </script>
 
 <style scoped>
+.el-aside {
+  background-color: #dce0d9; 
+  color: black;
+}
+
+.el-menu {
+  background-color: transparent; /* 使菜单背景透明 */
+}
+
+.el-menu-item:focus, .el-menu-item:hover {
+  background-color: #409EFF; /* 鼠标悬停或聚焦时的背景颜色 */
+}
+
+.el-main {
+  padding: 20px; /* 增加一些内边距 */
+}
+
+/* 表单样式 */
+.el-form {
+  margin: 20px auto; /* 居中显示 */
+  max-width: 600px; /* 最大宽度 */
+}
+
+.el-form-item {
+  margin-bottom: 24px; /* 增加表单项的底部间距 */
+}
+
+.el-input {
+  border-radius: 4px; /* 圆角边框 */
+}
+
+.el-button {
+  margin-right: 10px; /* 按钮之间的间距 */
+}
+
+/* 页脚样式 */
 .footer {
   text-align: center;
-  margin-top: 20px;
+  padding: 15px 0;
+  margin-top: 30px;
+  font-size: 14px;
+  color: #999;
 }
+
 </style>

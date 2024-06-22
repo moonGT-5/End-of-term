@@ -12,7 +12,7 @@ const routes = [
     component: () => import('@/views/AboutView.vue')
   },
   {
-    path: '/feedback/:productName?',
+    path: '/feedback/:name?',
     name: 'feedback',
     component: () => import('@/views/FeedBackView.vue')
   },

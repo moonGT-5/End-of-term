@@ -59,10 +59,9 @@ export default {
     this.fetchItems();
   },
   methods: {
-    formatTime(timeStr) {
+    formatTime(timeArray) {
+      const time = new Date(timeArray[0], timeArray[1] - 1, timeArray[2], timeArray[3], timeArray[4], timeArray[5]);
       const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-      const time = new Date(timeStr);
-      // 注意：Intl.DateTimeFormat的具体格式化结果可能依赖于浏览器的地区设置
       return new Intl.DateTimeFormat('zh-CN', options).format(time).replace(/\//g, '-').replace(',', '');
     },
     fetchItems() {
@@ -77,3 +76,4 @@ export default {
   },
 };
 </script>
+

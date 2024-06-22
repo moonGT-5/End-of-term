@@ -16,6 +16,15 @@
       </el-aside>
 
       <el-container>
+
+        <div style="width: 100%; max-width: 960px; margin: auto; margin-top: 20px;">
+      <el-carousel :interval="4000" type="card" height="150px">
+        <el-carousel-item v-for="item in carouselItems" :key="item.id" :style="{ backgroundImage: 'url(' + item.imageUrl + ')', backgroundSize: 'cover', backgroundPosition: 'center' }">
+          <h3 class="medium">{{ item.title }}</h3>
+        </el-carousel-item>
+      </el-carousel>
+    </div>
+
         <el-main>
           <el-table :data="cartItems" stripe style="width: 100%" @selection-change="handleSelectionChange"
             ref="cartTable">
@@ -43,7 +52,7 @@
             </el-table-column>
             <el-table-column label="操作">
               <template #default="{ row }">
-                <el-button @click="evaluateItem(row.name, true)" type="primary" >评价</el-button>
+                <el-button @click="evaluateItem(row.name, true)" type="primary">评价</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -54,9 +63,11 @@
             <el-button type="primary" @click="update">立即购买</el-button>
           </div>
         </el-main>
+
         <el-footer class="footer">
           <router-link to="/about">© 2024 Altscherz</router-link>
         </el-footer>
+
       </el-container>
     </el-container>
   </el-container>
@@ -68,7 +79,15 @@ export default {
   data() {
     return {
       cartItems: [],
-      selectedItems: []
+      selectedItems: [],
+      carouselItems: [
+        { id: 1, imageUrl: 'http://localhost/images/1.jpg' },
+        { id: 2, imageUrl: 'http://localhost/images/2.jpg' },
+        { id: 3, imageUrl: 'http://localhost/images/3.jpg' },
+        { id: 4, imageUrl: 'http://localhost/images/4.jpg' },
+        { id: 5, imageUrl: 'http://localhost/images/5.jpg' },
+        { id: 6, imageUrl: 'http://localhost/images/6.jpg' },
+      ]
     };
   },
   computed: {
@@ -86,26 +105,26 @@ export default {
       this.$forceUpdate();
     },
     evaluateItem(name) {
-      this.$router.push({ name: 'feedback', params: { name} });
+      this.$router.push({ name: 'feedback', params: { name } });
     },
     clearSelection() {
       this.$refs.cartTable.clearSelection();
     },
     update() {
-  const updatedItems = this.selectedItems.map(item => ({
-    ...item,
-    number: 1 
-  }));
-  axios.post('http://localhost:8000/api/items/update', updatedItems)
-    .then(response => {
-      console.log('Update response:', response);
-      alert('购买成功,祝您用餐愉快!');
-      this.$router.push({ name: 'feedback'});
-    })
-    .catch(error => {
-      console.error('购买失败:', error);
-    });
-},
+      const updatedItems = this.selectedItems.map(item => ({
+        ...item,
+        number: 1
+      }));
+      axios.post('http://localhost:8000/api/items/update', updatedItems)
+        .then(response => {
+          console.log('Update response:', response);
+          alert('购买成功,祝您用餐愉快!');
+          this.$router.push({ name: 'feedback' });
+        })
+        .catch(error => {
+          console.error('购买失败:', error);
+        });
+    },
 
 
     fetchItems() {
@@ -149,6 +168,8 @@ export default {
 <style>
 h1 {
   text-align: center;
+  color: #4CAF50;
+  font-size: 2em;
 }
 
 .home {
@@ -163,18 +184,76 @@ h1 {
   margin-top: 20px;
 }
 
-.footer {
+.bold-price {
+  font-weight: bolder;
+}
+
+img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+body {
+  background-color: #fbf6ef;
+}
+
+.el-aside {
+  background-color: #dce0d9; 
+  color: black;
+}
+
+.el-menu {
+  background-color: transparent;
+}
+
+.el-menu-item:focus, .el-menu-item:hover {
+  background-color: #409EFF;
+}
+.el-main {
+  padding: 20px;
+}
+
+.el-table td,
+.el-table th.is-leaf,
+.el-table--border,
+.el-table--group {
+  border-color: #fbf6ef;
+  background-color: #fbf6ef;
+  color: black;
+}
+
+.el-table tbody tr:hover>td {
+  background-color: #ead7c3 !important
+}
+
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 150px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
+footer {
   position: relative;
   bottom: 0;
   width: 100%;
   text-align: center;
-  background-color: #f8f8f8;
-  padding: 10px;
-  box-shadow: 0 -2px 4px rgba(147, 107, 33, 0.1);
-  z-index: 1000;
+  padding: 1em 0;
+  background-color: #fbf6ef;
 }
 
-.bold-price {
-  font-weight: bolder;
+footer a {
+  text-decoration: none;
+  color: #42b983;
 }
 </style>

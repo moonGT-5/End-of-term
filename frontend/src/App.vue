@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<!-- <style>
 nav {
   padding: 1em;
 }
@@ -25,11 +25,11 @@ footer {
   width: 100%;
   text-align: center;
   padding: 1em 0;
-  background-color: #f8f9fa;
+  background-color: #fbf6ef;
 }
 
 footer a {
   text-decoration: none;
   color: #42b983;
 }
-</style>
+</style> -->
